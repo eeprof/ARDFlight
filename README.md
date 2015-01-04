@@ -16,11 +16,21 @@ Thanks to Yury Rozhdestvensky from http://robodem.com we got ability to create c
 Dependencies
 =========
 
-Nuget Package Modern UI for WPF from http://mui.codeplex.com/ .
-Nuget Package Catel MVVM from http://catelproject.com/ .
-Nuget Package SlimDX from http://slimdx.org/ .
+Nuget Package Modern UI for WPF from http://mui.codeplex.com/
 
-FFmpeg.AutoGen - .NET from Ruslan-B/FFmpeg.AutoGen wrapper for FFmpeg.
+Nuget Package Catel MVVM from http://catelproject.com/
 
+Nuget Package SlimDX from http://slimdx.org/ 
 
+FFmpeg.AutoGen - .NET from  https://github.com/Ruslan-B/FFmpeg.AutoGen wrapper for FFmpeg
+
+How to Use
+=========
+
+Download and compile with Visual Studio
+
+Next Steps
+=========
+
+Drone Configuration Ui
 
