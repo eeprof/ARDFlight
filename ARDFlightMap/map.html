@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>AR Drone Map</title>
+    <style>
+        html, body, #map-canvas {
+            height: 100%;
+            margin: 0px;
+            padding: 0px; 
+            overflow:hidden;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+
+        var map;
+        var Markers = [];
+        var polyLines = [];
+        var lineSymbol = {
+            path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+            scale: 1.5
+        };
+
+        //C.tor
+        function Call_initialize(zoomLevel, lat, lng, type) {
+            var MapType;
+            switch (type) {
+                case 1:
+                    MapType = google.maps.MapTypeId.ROADMAP;
+                    break;
+                case 2:
+                    MapType = google.maps.MapTypeId.TERRAIN;
+                    break;
+                case 3:
+                    MapType = google.maps.MapTypeId.HYBRID;
+                    break;
+                case 4:
+                    MapType = google.maps.MapTypeId.SATELLITE;
+                    break;
+                default:
+                    MapType = google.maps.MapTypeId.ROADMAP;
+            };
+
+            var myLatlng = new google.maps.LatLng(lat, lng);
+            var myOptions = { zoom: zoomLevel, center: myLatlng, mapTypeId: MapType };
+            var MarkerSize = new google.maps.Size(48, 48);
+
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            google.maps.event.addListener(map, 'click', Eve_click);
+            google.maps.event.addListener(map, 'mousemove', Eve_mousemove);
+
+            google.maps.event.addListener(map, 'idle', Eve_idle);
+            //google.maps.event.addListener(map, 'bounds_changed', Eve_idle);
+            //google.maps.event.addListener(map, 'center_changed', Eve_idle);
+            //google.maps.event.addListener(map, 'dragend', Eve_idle);
+            //google.maps.event.addListener(map, 'heading_changed', Eve_idle);
+            //google.maps.event.addListener(map, 'maptypeid_changed', Eve_idle);
+            //google.maps.event.addListener(map, 'projection_changed', Eve_idle);
+            //google.maps.event.addListener(map, 'tilesloaded', Eve_idle);
+            //google.maps.event.addListener(map, 'tilt_changed', Eve_idle);
+            //google.maps.event.addListener(map, 'zoom_changed', Eve_idle);
+
+        }
+
+        //------------------------------------------------------
+
+
+        //Window Events
+        function Eve_click(e) {
+            window.external.Eve_click(e.latLng.lat(), e.latLng.lng());
+          
+        }
+
+        function Eve_mousemove(e) {
+            window.external.Eve_mousemove(e.latLng.lat(), e.latLng.lng());
+           
+        }
+
+        function Eve_idle() {
+            window.external.Eve_idle();
+          
+        }
+
+        function Eve_completed() {
+            window.external.Eve_completed();
+           
+        }
+
+        function Eve_merkeradded(MarkerName, MarkerIndex) {
+            window.external.Eve_merkeradded(MarkerName, MarkerIndex);
+           
+        }
+
+        function Eve_merkermoved(name, lat, lng) {
+            window.external.Eve_merkermoved(name, lat, lng);
+           
+        }
+        //------------------------------------------------------
+
+
+
+        //Functions
+        function Call_deleteallmarker() {
+            if (Markers) {
+                for (i in Markers) {
+                    Markers[i].setMap(null);
+                    polyLines[i].setMap(null);
+                    google.maps.event.clearInstanceListeners(Markers[i]);
+                    google.maps.event.clearInstanceListeners(polyLines[i]);
+                    Markers[i] = null;
+                    polyLines[i] = null;
+                }
+                Markers.length = 0;
+                polyLines.length = 0;
+                Eve_completed();
+            }
+        }
+
+        function Call_addmarker(name, lat, lng) {
+
+            Call_addmarkerwcol(name,'#0026b3', lat, lng);
+        }
+
+        function Call_addmarkerwcol(name,color, lat, lng) {
+
+            var found = false;
+            var merkerindex = 0;
+
+            for (i = 0; i < Markers.length; i++) {
+                var title = Markers[i].getTitle();
+                if (title == name) {
+                    merkerindex = i;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found == true) {
+                movemerker(merkerindex, lat, lng);
+            }
+
+            if (found == false) {
+                createnewmerker(name, color, lat, lng);
+            }
+
+            Call_setCenter(lat, lng);
+            Eve_completed();
+        }
+
+        function Call_movemarker(merkerindex, lat, lng) {
+            movemerker(merkerindex, lat, lng);
+            Call_setCenter(lat, lng);
+            Eve_completed();
+        }
+
+        function Call_setCenter(lat, lng) {
+            var MarkerLatLng = new google.maps.LatLng(lat, lng);
+            map.setCenter(MarkerLatLng);
+           
+        }
+        //------------------------------------------------------
+
+        
+        //Local Functions
+        function createnewmerker(name,color, lat, lng) {
+            var polyOptions = {
+                strokeColor: color,
+                strokeOpacity: 1.0,
+                strokeWeight: 1,
+                geodesic: true,
+                icons: [{
+                    icon: lineSymbol,
+                    repeat: '100px'
+                }],
+                zIndex: 10
+            }
+
+            icon = {
+                path: 'm1.8333,-3.9199c3.4978,0 6.3333,2.8355 6.3333,6.3333c0,3.4978 -2.8355,6.3333 -6.3333,6.3333c-3.4978,0 -6.3333,-2.8355 -6.3333,-6.3333c0,-3.4978 2.8355,-6.3333 6.3333,-6.3333zm-11.0833,6.3333c0,3.0606 1.2405,5.8314 3.2462,7.8371l-3.3588,3.3588c-2.8652,-2.8653 -4.6374,-6.8236 -4.6374,-11.1959c0,-4.3722 1.7722,-8.3306 4.6374,-11.1959l3.3588,3.3588c-2.0057,2.0057 -3.2462,4.7765 -3.2462,7.8371zm22.1666,0c0,-3.0606 -1.2405,-5.8314 -3.2462,-7.8371l3.3587,-3.3587c2.8653,2.8652 4.6375,6.8236 4.6375,11.1958c0,4.3723 -1.7722,8.3306 -4.6375,11.1959l-3.3587,-3.3588c2.0057,-2.0057 3.2462,-4.7765 3.2462,-7.8371zm-31.6666,0c0,5.6839 2.3038,10.8298 6.0287,14.5546l-3.3588,3.3588c-4.5844,-4.5845 -7.4199,-10.9178 -7.4199,-17.9134c0,-6.9956 2.8355,-13.3289 7.4199,-17.9134l3.3588,3.3588c-3.7249,3.7248 -6.0287,8.8707 -6.0287,14.5546zm41.1666,0c0,-5.6839 -2.3038,-10.8298 -6.0287,-14.5546l3.3588,-3.3588c4.5844,4.5845 7.4199,10.9178 7.4199,17.9134c0,6.9956 -2.8355,13.3289 -7.4199,17.9134l-3.3588,-3.3588c3.7249,-3.7248 6.0287,-8.8707 6.0287,-14.5546z',
+                strokeColor: color,
+                strokeWeight: 2,
+                scale: 1
+            };
+
+            var MarkerLatLng = new google.maps.LatLng(lat, lng);
+            var MarkerOption = { map: map, position: MarkerLatLng, title: name, icon: icon };
+            var Marker = new google.maps.Marker(MarkerOption);
+            var polyLine = new google.maps.Polyline(polyOptions);
+
+            polyLine.setMap(map);
+            polyLines.push(polyLine);
+            Markers.push(Marker);
+            MarkerLatLng = null;
+            MarkerOption = null;
+            Eve_merkeradded(name,Markers.length)
+
+        }
+
+        function movemerker(merkerindex, lat, lng) {
+            var MarkerLatLng = new google.maps.LatLng(lat, lng);
+            var path = polyLines[merkerindex].getPath();
+            Markers[merkerindex].setPosition(MarkerLatLng);
+            path.push(MarkerLatLng);
+            Eve_merkermoved(name, lat, lng)
+
+        }
+        //------------------------------------------------------
+
+    </script>
+
+</head>
+<body>
+    <div id="map_canvas" style="width: 100%; height: 100%">
+    </div>
+</body>
+</html>

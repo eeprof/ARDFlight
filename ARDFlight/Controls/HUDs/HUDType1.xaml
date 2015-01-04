@@ -1,0 +1,293 @@
+﻿<UserControl x:Class="HUDType1"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+			 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+			 xmlns:app="clr-namespace:ARDFlight"
+			 xmlns:appconv="clr-namespace:ARDFlight.appconverters"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:catel="http://catel.codeplex.com"
+			 x:Name="userControl"
+			 mc:Ignorable="d"
+			 d:DesignHeight="300"
+			 d:DesignWidth="300">
+	<Grid>
+		<Grid.Resources>
+			<appconv:PitchToMarginConverter x:Key="PitchToMarginConverter" />
+			<appconv:RollToMarginConverter x:Key="RollToMarginConverter" />
+			<Thickness x:Key="pitchfallback"
+					   Top="100"
+					   Bottom="0"
+					   Left="0"
+					   Right="0" />
+			<Thickness x:Key="rollfallback"
+					   Top="0"
+					   Bottom="0"
+					   Left="100"
+					   Right="0" />
+			<SolidColorBrush x:Key="rollscb"
+							 Color="Red" />
+			<SolidColorBrush x:Key="pitchscb"
+							 Color="BlueViolet" />
+			<SolidColorBrush x:Key="yawscb"
+							 Color="Orange" />
+			<SolidColorBrush x:Key="lascb"
+							 Color="Red" />
+			<SolidColorBrush x:Key="loscb"
+							 Color="BlueViolet" />
+			<SolidColorBrush x:Key="elescb"
+							 Color="Blue"  />
+			<SolidColorBrush x:Key="altscb"
+							 Color="Blue" />
+			<SolidColorBrush x:Key="rollpitchscb"
+							 Color="{DynamicResource AccentColor}" />
+			<appconv:BitmapConverter  x:Key="BitmapConverter" />
+		</Grid.Resources>
+		<Grid Background="{DynamicResource TechFontColorBackground}">
+			<Grid VerticalAlignment="Top"
+				  HorizontalAlignment="Right"
+				  Opacity="{Binding HudOpacity}"
+				  Margin="5,5,5,0">
+				<Border Background="Transparent">
+					<Label Content="No picture"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center"
+						   Foreground="Goldenrod" />
+				</Border>
+			</Grid>
+		</Grid>		
+		<Grid >
+			
+			<Image x:Name="imageVideo"
+				   Stretch="Fill"
+				   Source="{Binding VideoImage, Converter={StaticResource BitmapConverter}}" />
+		</Grid>
+		<Grid VerticalAlignment="Top"
+			  HorizontalAlignment="Left"
+			  Margin="5,5,0,0"
+			  Opacity="{Binding HudOpacity}">
+			<StackPanel Orientation="Vertical">
+				<Grid Margin="0,0,0,5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[4].Name}"
+							   Grid.Column="0"
+							   Foreground="{DynamicResource lascb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[4].NumValue,  StringFormat=\{0:00.0000\}}"
+							   Grid.Column="1"
+							   Foreground="{DynamicResource lascb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+				</Grid>
+				<Grid Margin="0,0,0,5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[5].Name}"
+							   Grid.Column="0"
+							   Foreground="{DynamicResource loscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[5].NumValue, StringFormat=\{0:00.0000\}}"
+							   Grid.Column="1"
+							   Foreground="{DynamicResource loscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+				</Grid>
+				<Grid Margin="0,0,0,5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[6].Name}"
+							   Grid.Column="0"
+							   Foreground="{DynamicResource elescb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[6].NumValue,  StringFormat=\{0:00.000\}}"
+							   Grid.Column="1"
+							   Foreground="{DynamicResource elescb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+				</Grid>
+			</StackPanel>
+		</Grid>
+		<Grid VerticalAlignment="Bottom"
+			  HorizontalAlignment="Right"
+			  Margin="0,0,5,0"
+			  Opacity="{Binding HudOpacity}">
+			<StackPanel Orientation="Vertical">
+				<Grid Margin="0,0,0,5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[0].Name}"
+							   Grid.Column="0"
+							   Foreground="{DynamicResource rollscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[0].NumValue,  StringFormat=\{0:+0.0000;-0.0000;+0.0000\}}"
+							   Grid.Column="1"
+							   Foreground="{DynamicResource rollscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+				</Grid>
+				<Grid Margin="0,0,0,5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[1].Name}"
+							   Grid.Column="0"
+							   Foreground="{DynamicResource pitchscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[1].NumValue,  StringFormat=\{0:+0.0000;-0.0000;+0.0000\}}"
+							   Grid.Column="1"
+							   Foreground="{DynamicResource pitchscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+				</Grid>
+				<Grid Margin="0,0,0,5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[2].Name}"
+							   Grid.Column="0"
+							   Foreground="{DynamicResource yawscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[2].NumValue,  StringFormat=\{0:+0.0000;-0.0000;+0.0000\}}"
+							   Grid.Column="1"
+							   Foreground="{DynamicResource yawscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+				</Grid>
+				<Grid Margin="0,0,0,5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[3].Name}"
+							   Grid.Column="0"
+							   Foreground="{DynamicResource altscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+					<TextBlock VerticalAlignment="Center"
+							   Text="{Binding HudNavigationDataList[3].NumValue,  StringFormat=\{0:+0.0000;-0.0000;+0.0000\}}"
+							   Grid.Column="1"
+							   Foreground="{DynamicResource altscb}"
+							   Style="{StaticResource HudStatusTextStyle}" />
+				</Grid>
+			</StackPanel>
+		</Grid>		
+		<Grid Width="201"
+			  Height="200"
+			  VerticalAlignment="Center"
+			  HorizontalAlignment="Center"
+			  Opacity="{Binding HudOpacity}">
+			<Rectangle  VerticalAlignment="Top"
+						StrokeThickness="1"
+						SnapsToDevicePixels="True"
+						Stroke="{DynamicResource pitchscb}"
+						Height="1"
+						Margin="{Binding HudNavigationDataList[1].NumValue ,Converter={StaticResource PitchToMarginConverter},FallbackValue={StaticResource pitchfallback}}" />
+			<Rectangle  HorizontalAlignment="Left"
+						StrokeThickness="1"
+						SnapsToDevicePixels="True"
+						Stroke="{DynamicResource rollscb}"
+						Width="1"
+						Margin="{Binding  HudNavigationDataList[0].NumValue ,Converter={StaticResource RollToMarginConverter},FallbackValue={StaticResource rollfallback}}" />
+		</Grid>
+		<Grid Opacity="{Binding HudOpacity}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="1" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition Height="1" />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Rectangle   Grid.Row="0"
+						 Grid.Column="1"
+						 VerticalAlignment="Bottom"
+						 Height="100"
+						 Width="1"
+						 Margin="0,0,0,20"
+						 Stroke="{DynamicResource rollpitchscb}"
+						 StrokeDashCap="Flat"
+						 Fill="{DynamicResource TechFontColorForeground}" />
+			<Rectangle   Grid.Row="2"
+						 Grid.Column="1"
+						 VerticalAlignment="Top"
+						 Height="100"
+						 Width="1"
+						 Margin="0,20,0,0"
+						 Stroke="{DynamicResource rollpitchscb}"
+						 StrokeDashCap="Flat"
+						 Fill="{DynamicResource TechFontColorForeground}" />
+			<Rectangle  Grid.Row="1"
+						Grid.Column="0"
+						HorizontalAlignment="Right"
+						Width="100"
+						Height="1"
+						Margin="0,0,20,0"
+						Stroke="{DynamicResource rollpitchscb}"
+						StrokeDashCap="Flat"
+						Fill="{DynamicResource TechFontColorForeground}" />
+			<Rectangle   Grid.Row="1"
+						 Grid.Column="2"
+						 HorizontalAlignment="Left"
+						 Width="100"
+						 Height="1"
+						 Margin="20,0,0,0"
+						 Stroke="{DynamicResource rollpitchscb}"
+						 StrokeDashCap="Flat"
+						 Fill="{DynamicResource TechFontColorForeground}" />
+			<Ellipse Width="150"
+					 Grid.Row="0"
+					 Grid.Column="0"
+					 Grid.RowSpan="3"
+					 Grid.ColumnSpan="3"
+					 Height="150"
+					 Stroke="{DynamicResource TechFontColorForeground}"
+					 StrokeDashCap="Flat" />
+			<Grid Grid.Column="0"
+				  Grid.Row="0"
+				  HorizontalAlignment="Right"
+				  VerticalAlignment="Bottom"
+				  Margin="0,0,0,105">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding HudNavigationDataList[0].NumValue, StringFormat=\{0:+0.0000;-0.0000;+0.0000\}}"
+							   Width="50"
+							   VerticalAlignment="Center"
+							   Foreground="{DynamicResource rollscb}"
+							   Background="Transparent" />
+				</StackPanel>
+			</Grid>
+			<Grid Grid.Column="2"
+				  Grid.Row="2"
+				  HorizontalAlignment="Left"
+				  VerticalAlignment="Top"
+				  Margin="80,5,0,0">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding HudNavigationDataList[1].NumValue, StringFormat=\{0:+0.0000;-0.0000;+0.0000\}}"
+							   Width="50"
+							   VerticalAlignment="Center"
+							   Foreground="{DynamicResource pitchscb}"
+							   Background="Transparent" />
+				</StackPanel>
+			</Grid>
+		</Grid>
+	</Grid>
+</UserControl>

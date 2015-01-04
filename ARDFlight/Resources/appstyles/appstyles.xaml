@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+   
+    <FontFamily x:Key="appFontFamily">Consolas</FontFamily>
+    <sys:Double x:Key="appFontSize">12</sys:Double>
+    <SolidColorBrush x:Key="monitorforegroundcolor" Color="{DynamicResource AccentColor}" ></SolidColorBrush>
+    <SolidColorBrush x:Key="monitorbackgroundcolor"
+                     Color="#FF000000"></SolidColorBrush>
+    <!--Text Block Font-->
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily"
+                Value="{StaticResource appFontFamily}" />
+    </Style>
+
+    <!--Text Box Font-->
+    <Style TargetType="TextBox"  >
+        <Setter Property="FontFamily"
+                Value="{StaticResource appFontFamily}" />
+    </Style>
+	<!--Button Default Widt Height-->
+	<sys:Double x:Key="DefaultButtonWidth">100</sys:Double>
+	<!--<sys:Double x:Key="TechFontSize">12</sys:Double>-->
+	<SolidColorBrush x:Key="TechFontColorForeground"
+					 Color="{DynamicResource AccentColor}"></SolidColorBrush>
+	<SolidColorBrush x:Key="TechFontColorBackground">Black</SolidColorBrush>
+	<Style x:Key="StatusTextStyle"
+		   TargetType="{x:Type TextBlock}">
+		<Setter Property="FontFamily"
+				Value="{DynamicResource appFontFamily}" />
+		<Setter Property="Background"
+				Value="Black" />
+		<Setter Property="Foreground"
+				Value="{DynamicResource TechFontColorForeground}" />
+	</Style>
+	<Style x:Key="HudStatusTextStyle"
+		   TargetType="{x:Type TextBlock}">
+		<Setter Property="FontFamily"
+				Value="{DynamicResource appFontFamily}" />
+		<Setter Property="FontWeight" 
+				Value="Bold"  />
+		<Setter Property="Background"
+				Value="Transparent"  />
+		<Setter Property="Foreground"
+				Value="{DynamicResource TechFontColorForeground}" />
+	</Style>
+</ResourceDictionary>

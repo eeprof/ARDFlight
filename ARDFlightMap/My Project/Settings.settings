@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="SelectedThemeSource" Type="System.Uri" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SelectedThemeFontSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">small</Value>
+    </Setting>
+    <Setting Name="SelectedThemeColor" Type="System.Windows.media.color" Scope="User">
+      <Value Profile="(Default)">#FFADFF2F</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

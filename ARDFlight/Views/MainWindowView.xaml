@@ -1,0 +1,35 @@
+﻿<mui:ModernWindow x:Class="MainWindowView"
+				  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+				  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+				  xmlns:app="clr-namespace:ARDFlight"
+				  xmlns:appbehaviors="clr-namespace:ARDFlight.appbehaviors"
+				  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+				  WindowStartupLocation="CenterScreen" 
+				  IsTitleVisible="True"
+				  Title="ARD Flight"
+				  Width="870"
+				  Height="650"
+				  MinWidth="870"
+				  MinHeight="650"
+				  ResizeMode="NoResize" 
+				  Style="{DynamicResource EmptyWindow}">
+	<Grid>
+		
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0"></Grid>
+		<Grid Grid.Row="1">
+			<app:FlyControl></app:FlyControl>
+		</Grid>
+		
+	</Grid>
+	<i:Interaction.Triggers>
+		<i:EventTrigger EventName="Loaded">
+			<appbehaviors:MainWindowViewLoadedBehavior />
+		</i:EventTrigger>
+	</i:Interaction.Triggers>
+</mui:ModernWindow>

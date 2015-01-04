@@ -1,0 +1,234 @@
+﻿<mui:ModernWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+				  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+				  xmlns:app="clr-namespace:ARDFlight"
+				  xmlns:appconverter="clr-namespace:ARDFlight.appconverters"  
+				  xmlns:catel="http://catel.codeplex.com"
+				  x:Name="modernWindow"
+				  xmlns:appbehaviors="clr-namespace:ARDFlight.appbehaviors"
+				  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+				  x:Class="InputSettingsView"
+				  WindowStartupLocation="CenterScreen"
+				  IsTitleVisible="True"
+				  Title="ARD Flight - Input Settings"
+				  Width="700"
+				  Height="500"
+				  MinWidth="700"
+				  MinHeight="500"
+				  Style="{DynamicResource EmptyWindow}">
+	<mui:ModernWindow.Resources>
+		<catel:BooleanToCollapsingVisibilityConverter x:Key="BooleanToCollapsingVisibilityConverter" />
+		<catel:BooleanToHidingVisibilityConverter x:Key="BooleanToHidingVisibilityConverter" />
+		<appconverter:InputConfigStateToCurrentMappingConverter x:Key="InputConfigStateToCurrentMappingConverter" />
+		<appconverter:InputConfigStateToNameConverter  x:Key="InputConfigStateToNameConverter" />
+	</mui:ModernWindow.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="10" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0" />
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="5" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="10" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Text="Available Inputs"
+					   Grid.Row="0" />
+			<ComboBox ItemsSource="{Binding InputListString}"
+					  SelectedItem="{Binding InputListStringSelected}"
+					  Grid.Row="2" />
+		</Grid>
+		<Grid Grid.Row="3">
+			<!--<app:MappingControl Visibility="{Binding MappingControlVisibility ,Converter={StaticResource BooleanToCollapsingVisibilityConverter}}" />-->
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="5" />
+				<RowDefinition  />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="10" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<Border  Grid.Column="0"
+					 Grid.Row="0"
+					 BorderThickness="1"
+					 BorderBrush="{DynamicResource TechFontColorForeground}"
+					
+					
+					 Height="20">
+				<TextBlock Text="Axes"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center" />
+			</Border>
+			<Border  Grid.Column="2"  
+					 Grid.Row="0"
+					 BorderThickness="1"
+					 BorderBrush="{DynamicResource TechFontColorForeground}"
+					
+					 Height="20">
+				<TextBlock Text="Buttons"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center" />
+			</Border>
+			<ItemsControl Grid.Column="0"
+					  Grid.Row="2"
+					  ItemsSource="{Binding AxesStates}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Grid Margin="0,0,0,5">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition Width="10" />
+								<ColumnDefinition />
+								<ColumnDefinition Width="5" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Text="{Binding Value.Name}"
+									   Grid.Column="0"
+									   TextAlignment="Left"
+									   VerticalAlignment="Center" />
+							<TextBox Text="{Binding Value.CurrentMapping}"
+									 Grid.Column="2"
+									 VerticalContentAlignment="Center" />
+							<Border  BorderThickness="1"
+									 BorderBrush="{DynamicResource TechFontColorForeground}"
+									 Grid.Column="4"
+									 Width="18"
+									 Height="18">
+								<Button Cursor="Hand"
+										ToolTip="Change Maping"
+										Command="{Binding DataContext.ChangeInputCommand, ElementName=modernWindow}"
+										CommandParameter="{Binding Key}"></Button>
+							</Border>
+						</Grid>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<ItemsControl  Grid.Column="3"
+					  Grid.Row="2"
+					  ItemsSource="{Binding ButtonStates}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Grid Margin="0,0,0,5">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition Width="10" />
+								<ColumnDefinition />
+								<ColumnDefinition Width="5" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Text="{Binding Value.Name}"
+									   Grid.Column="0"
+									   TextAlignment="Left"
+									   VerticalAlignment="Center" />
+							<TextBox Text="{Binding Value.CurrentMapping}"
+									 Grid.Column="2"
+									 VerticalContentAlignment="Center" />
+							<Border  BorderThickness="1"
+									 BorderBrush="{DynamicResource TechFontColorForeground}"
+									 Grid.Column="4"
+									 Width="18"
+									 Height="18">
+								<Button Cursor="Hand"
+										ToolTip="Change Maping"
+										Command="{Binding DataContext.ChangeInputCommand, ElementName=modernWindow}"
+										CommandParameter="{Binding Key}"></Button>
+							</Border>
+						</Grid>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</Grid>
+		<Grid Grid.Row="4">
+			<StackPanel Orientation="Horizontal"
+						HorizontalAlignment="Right">
+				<!--<Button Content="Save"
+						Width="90"
+						Command="{Binding SaveCommand}" />-->
+				<Button Content="Close"  Command="{Binding CancelCommand}"
+						Width="90" Margin="5,0,0,0" />
+			</StackPanel>
+			<Button HorizontalAlignment="Left"
+					Content="Reset"
+					Width="90"
+					Command="{Binding ResetCommand}" />
+		</Grid>
+		<Grid Grid.Row="0" Grid.RowSpan="5" Visibility="{Binding ChangeStateVisibility,Converter={StaticResource BooleanToHidingVisibilityConverter}}">
+			  <Border Background="Black" Opacity="0.5" />
+			<Grid VerticalAlignment="Center"
+				  HorizontalAlignment="Center"
+				  Background="Black">
+				<Border BorderThickness="1"						
+						BorderBrush="{DynamicResource TechFontColorForeground}"
+						Background="{Binding Background,  ElementName=modernWindow}" Opacity="1">
+					<Grid Width="300" Margin="10">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition Width="10" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="5" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="5" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="20" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="5" />
+						</Grid.RowDefinitions>
+						<TextBlock Text="Change" Grid.Column="0" Grid.Row="0" />
+						<TextBlock Text="{Binding StateInEdit.CurrentStateName}"
+								   Grid.Column="2"
+								   Grid.Row="0" />
+						<TextBlock Text="OldValue"
+								   Grid.Column="0"
+								   Grid.Row="2" />
+						<TextBlock Text="{Binding StateInEdit.CurrentStateMapping}"
+								   Grid.Column="2"
+								   Grid.Row="2" />
+						<TextBlock Text="New Value"
+								   Grid.Column="0"
+								   Grid.Row="4" />
+						<TextBox Text="{Binding StateInEdit.NewStateMapping}" IsReadOnly="True" 
+								   Grid.Column="2"
+								   Grid.Row="4" />
+						<StackPanel Orientation="Horizontal"
+									HorizontalAlignment="Right" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
+							<Button Content="Reset"
+									Width="70"
+									Command="{Binding ResetStateCommand}" />
+							<Button Content="Save"
+									Width="70"
+									Command="{Binding SaveStateCommand}"
+									Margin="5,0,0,0" />
+							<Button Content="Close"
+									Command="{Binding CancelStateCommand}"
+									Width="70"
+									Margin="5,0,0,0" />
+						</StackPanel>
+						
+					</Grid>
+				</Border>
+			</Grid>
+		</Grid>
+		
+	</Grid>
+	<i:Interaction.Triggers>
+		<i:EventTrigger EventName="Loaded">
+			<appbehaviors:InputSettingsViewLoadedBehavior />
+		</i:EventTrigger>
+	</i:Interaction.Triggers>
+</mui:ModernWindow>
